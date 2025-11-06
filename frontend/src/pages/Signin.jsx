@@ -1,7 +1,9 @@
 import { useForm } from "react-hook-form"
 import { motion } from "framer-motion"
 import { useState } from "react"
-import { NavLink } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
+import api from '../api/axios'
+import toast from "react-hot-toast"
 
 export function Signin() {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -22,17 +24,22 @@ export function Signin() {
   })
 
   const password = watch("password")
+  const navigate=useNavigate()
 
   const onSubmit = async (data) => {
-    setIsSubmitting(true)
-    try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      console.log("Signup data:", data)
-      // Handle signup logic here
-    } finally {
-      setIsSubmitting(false)
+   setIsSubmitting(true);
+   api.post('/api/user/signin',data)
+   .then((res)=>{
+    if(res.data.error){
+      toast.error(res.data.error)
     }
+    else if(res.data.success){
+      toast.success(res.data.success)
+      navigate('/')
+    }
+   })
+
+   setIsSubmitting(false)
   }
 
   const containerVariants = {
@@ -86,8 +93,7 @@ export function Signin() {
       >
         {/* Header */}
         <motion.div variants={itemVariants} className="mb-8">
-          <h1 className="text-3xl font-bold text-blue-900 mb-2">Create Account</h1>
-          <p className="text-gray-600">Join TalkBoard today</p>
+          <h1 className="text-3xl font-bold text-blue-900 mb-2">Log in to your Account</h1>
         </motion.div>
 
         {/* Form */}
@@ -152,9 +158,9 @@ export function Signin() {
             whileTap="tap"
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-blue-500 hover:bg-green-500 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
+            className="w-full bg-blue-500 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
           >
-            {isSubmitting ? "Creating Account..." : "Sign Up"}
+            {isSubmitting ? "Logging..." : "Sign in"}
           </motion.button>
         </form>
 
@@ -163,7 +169,7 @@ export function Signin() {
           Don't have any account?{" "}
           <NavLink
             to="/signup"
-            className="text-blue-500 hover:text-green-500 font-semibold transition-colors"
+            className="text-blue-500 font-semibold transition-colors"
           >
             Signup
           </NavLink>

@@ -1,37 +1,58 @@
 import { useForm } from "react-hook-form"
 import { motion } from "framer-motion"
 import { useState } from "react"
-import { NavLink } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
+import api from '../api/axios'
+import {toast} from 'react-hot-toast'
 
 export function Signup() {
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [clicked,setClicked]=useState(false)
+  const [userdata,setUserdata]=useState({})
+  const [enteredotp,setEnteredOtp]=useState(null)
+  const [actualotp,setActualOtp]=useState(null)
+  const [emailverified,setEmailVerified]=useState(false)
 
   const {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
-  } = useForm({
-    mode: "onBlur",
-    defaultValues: {
-      username: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    },
-  })
+  } = useForm()
 
   const password = watch("password")
+  const navigate=useNavigate()
 
   const onSubmit = async (data) => {
-    setIsSubmitting(true)
-    try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      console.log("Signup data:", data)
-      // Handle signup logic here
-    } finally {
-      setIsSubmitting(false)
+    setClicked(true);
+    setUserdata(data);
+    toast.success('Otp sent')
+    api.post('/api/user/sendotp',data)
+    .then((res)=>{
+      if(res.data.otp){
+        setActualOtp(res.data.otp)
+      }
+    })
+    .catch((e)=>{
+      console.log(e);
+    })
+  }
+
+  const verifyEmail=(e)=>{
+    e.preventDefault();
+    if(Number(enteredotp)===Number(actualotp)){
+      setEmailVerified(true)
+      api.post('/api/user/signup',userdata)
+      .then((res)=>{
+        if(res.data.success){
+          toast.success(res.data.success)
+          navigate('/signin');
+        }
+      })
+    }
+    else{
+      return toast.error('Wrong otp')
     }
   }
 
@@ -73,11 +94,30 @@ export function Signup() {
             Back
         </NavLink>
 
+      {clicked && !emailverified
+      ?<div className="absolute shadow-black shadow z-50 p-16 rounded-md bg-white text-black">
+        <p className="text-center text-lg sm:text-xl md:text-2xl font-bold mb-2">Otp Verification</p>
+        <p className="text-gray-600 text-[8px] sm:text-[11px] md:text-sm mb-6">An otp is sent to your email {userdata.email}</p>
+
+        <div className="flex flex-col gap-2">
+        <label htmlFor="otp">Enter the otp</label>
+        <input type="number"
+        className="p-2 rounded-xs border"
+        name="otp"
+         value={enteredotp} 
+        onChange={(e)=>setEnteredOtp(e.target.value)}  />
+        <button type="submit"
+        className="py-2 px-4 rounded-2xl text-blue-500 border border-blue-500 hover:text-blue-900 hover:border-blue-900 duration-200"
+        onClick={verifyEmail}>Submit</button>
+        </div>
+      </div>
+    :<div></div>}
+
     <motion.div
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="w-full max-w-md"
+      className={`w-full max-w-md ${clicked?'blur-[5px]':''}`}
     >
       {/* Card Container */}
       <motion.div
@@ -127,6 +167,7 @@ export function Signup() {
             <label className="block text-sm font-semibold text-blue-900 mb-2">Email Address</label>
             <input
               type="email"
+              onChange={(e)=>console.log(e.target.value)}
               placeholder="Enter your email"
               {...register("email", {
                 required: "Email is required",
@@ -197,6 +238,28 @@ export function Signup() {
             )}
           </motion.div>
 
+          {/* Age Field */}
+          <motion.div variants={itemVariants}>
+            <label className="block text-sm font-semibold text-blue-900 mb-2">Age</label>
+            <input
+              type="number"
+              placeholder="What's Your Age ?"
+              {...register("age", {
+                required: "Please confirm your age",
+              })}
+              className="w-full px-4 py-3 rounded-lg bg-white border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-colors text-gray-900 placeholder-gray-400"
+            />
+            {errors.age && (
+              <motion.p
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-red-500 text-sm mt-1.5"
+              >
+                {errors.age.message}
+              </motion.p>
+            )}
+          </motion.div>
+
           {/* Submit Button */}
           <motion.button
             variants={buttonVariants}
@@ -205,7 +268,7 @@ export function Signup() {
             whileTap="tap"
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-blue-500 hover:bg-green-500 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
+            className="w-full bg-blue-500 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
           >
             {isSubmitting ? "Creating Account..." : "Sign Up"}
           </motion.button>
@@ -216,7 +279,7 @@ export function Signup() {
           Already have an account?{" "}
           <NavLink
             to="/signin"
-            className="text-blue-500 hover:text-green-500 font-semibold transition-colors"
+            className="text-blue-500font-semibold transition-colors"
           >
             Login
           </NavLink>

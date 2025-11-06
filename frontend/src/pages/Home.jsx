@@ -111,9 +111,9 @@ export default function Home() {
           {/* Boards Button */}
           <motion.button
             variants={buttonVariants}
-            whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(74, 222, 128, 0.3)" }}
+            whileHover={{ scale: 1.05}}
             whileTap={{ scale: 0.98 }}
-            className="w-full sm:w-auto px-8 sm:px-12 py-3 sm:py-4 bg-blue-500 text-white font-bold text-lg sm:text-xl rounded-full hover:bg-green-500 transition-all duration-200 shadow-lg"
+            className="w-full sm:w-auto px-8 sm:px-12 py-3 sm:py-4 text-blue-400 border border-blue-400 font-bold text-lg sm:text-xl rounded-full transition-all duration-200"
           >
             Explore Boards
           </motion.button>
@@ -121,11 +121,11 @@ export default function Home() {
           {/* Rooms Button */}
           <motion.button
             variants={buttonVariants}
-            whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(20, 83, 45, 0.3)" }}
+            whileHover={{ scale: 1.05}}
             whileTap={{ scale: 0.98 }}
-            className="w-full sm:w-auto px-8 sm:px-12 py-3 sm:py-4 bg-blue-700 text-white font-bold text-lg sm:text-xl rounded-full hover:bg-green-950 transition-all duration-200 shadow-lg"
+            className="w-full sm:w-auto px-8 sm:px-12 py-3 sm:py-4 bg-blue-700 text-white font-bold text-lg sm:text-xl rounded-full hover:bg-blue-950 transition-all duration-200"
           >
-            Join Rooms
+            Find Rooms
           </motion.button>
         </div>
       </motion.div>
