@@ -10,6 +10,7 @@ import {Toaster} from 'react-hot-toast'
 import Dashboard from './pages/Dashboard'
 import JoinRoom from './pages/JoinRoom'
 import CreateRoom from './pages/CreateRoom'
+import ChatRoom from './pages/ChatRoom'
 
 const router=createBrowserRouter([
   {
@@ -58,6 +59,12 @@ const router=createBrowserRouter([
     path:'/createroom',
     element:<div>
       <CreateRoom/>
+    </div>
+  },
+  {
+    path:'/chatroom',
+    element:<div>
+      <ChatRoom/>
     </div>
   }
 ])

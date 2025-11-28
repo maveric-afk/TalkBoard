@@ -75,8 +75,7 @@ export default function Home() {
           <div className="flex items-center justify-between h-16 sm:h-20">
             {/* Logo */}
             <motion.div className="flex items-center">
-              <motion.img whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} src={`/talkboard_logo.png`} alt="logo" className="h-[4rem] sm:h-[5rem] md:h-[7rem]"/>
-              <span className="hidden sm:inline text-xl sm:text-2xl font-bold text-blue-400">TalkBoard</span>
+              <motion.img whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} src={`/talkboard_logo.png`} alt="logo" className="h-[3rem] sm:h-[3.5rem] md:h-[4.5rem]"/>
             </motion.div>
 
             {/* Register Link */}
@@ -84,7 +83,7 @@ export default function Home() {
               <Link
                 to={`${loggedin?'/dashboard':'/signup'}`}
               >
-                <User className="hover:text-blue-500 scale-105 duration-200"></User>
+                <User className="hover:text-blue-500 size-8 scale-105 duration-200"></User>
               </Link>
             </motion.div>
           </div>

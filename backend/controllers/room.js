@@ -5,6 +5,10 @@ async function handleGetAllRooms(req,res) {
     return res.json({rooms:allRooms});
 }
 
+async function handleCreateRoom(req,res) {
+    
+}
+
 module.exports={
-    handleGetAllRooms
+    handleGetAllRooms,handleCreateRoom
 }

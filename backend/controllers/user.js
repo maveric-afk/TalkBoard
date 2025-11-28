@@ -93,7 +93,7 @@ async function handleGetUser(req,res) {
     return res.json({error:"Not logged in"})
  }
  const userdata=await userModel.find({_id:user.Id});
- return res.json({user:userdata[0]})
+ return res.json({user:userdata[0],token:token})
 }
 
 

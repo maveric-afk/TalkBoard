@@ -7,6 +7,8 @@ const roomRouter=require('./Routes/roomroute')
 const dotenv=require('dotenv');
 const {Server}=require('socket.io')
 const http=require('http')
+const cloudinary=require('cloudinary').v2;
+const fs=require('fs')
 const { loggedinOnly } = require('./middlewares/authenticate');
 
 const app=express();
