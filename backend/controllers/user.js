@@ -83,4 +83,34 @@ return res.json({success:"Logged in"})
 }
 
 
-module.exports={handleUserSignup,handleSendOtp,handleUserSignin}
+async function handleGetUser(req,res) {
+ const token=req.cookies?.token;
+ if(!token){
+    return res.json({error:"Not logged in"})
+ }   
+ const user=getUser(token);
+ if(!user){
+    return res.json({error:"Not logged in"})
+ }
+ const userdata=await userModel.find({_id:user.Id});
+ return res.json({user:userdata[0]})
+}
+
+
+async function handleUserLogout(req,res) {
+    const token=req.cookies?.token;
+    if(!token){
+        return res.json({error:"Not logged in"})
+    }
+   res.cookie('token','',{
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    expires: new Date(0)
+  });
+
+  return res.json({success:'Logged out'})
+}
+
+
+module.exports={handleUserSignup,handleSendOtp,handleUserSignin,handleGetUser,handleUserLogout}

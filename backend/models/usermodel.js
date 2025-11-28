@@ -37,7 +37,13 @@ const userSchema=new mongoose.Schema({
         type:String,
         required:true,
         default:'Normal'
-    }
+    },
+    Friends:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'users'
+        }
+    ]
 },{timestamps:true});
 
 const userModel=mongoose.model('user',userSchema);

@@ -3,9 +3,14 @@ const cors=require('cors');
 const cookieParser = require('cookie-parser');
 const {connectToDB}=require('./connection')
 const userRouter=require('./Routes/userroute')
-const dotenv=require('dotenv')
+const roomRouter=require('./Routes/roomroute')
+const dotenv=require('dotenv');
+const {Server}=require('socket.io')
+const http=require('http')
+const { loggedinOnly } = require('./middlewares/authenticate');
 
 const app=express();
+const server=http.createServer(app);
 const PORT=8000;
 
 dotenv.config();
@@ -33,8 +38,14 @@ app.use(cors(
 ));
 app.use(cookieParser());
 
-app.use('/api/user',userRouter)
+const io=new Server(server,cors({
+    origin: allowedOrigins,
+    credentials: true,
+}))
 
-app.listen(PORT,()=>{
+app.use('/api/user',userRouter)
+app.use('/api/room',loggedinOnly,roomRouter)
+
+server.listen(PORT,()=>{
     console.log(`Server is running at PORT ${PORT}`)
 })
