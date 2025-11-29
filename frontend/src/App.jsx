@@ -62,7 +62,7 @@ const router=createBrowserRouter([
     </div>
   },
   {
-    path:'/chatroom',
+    path:'/rooms/:id',
     element:<div>
       <ChatRoom/>
     </div>

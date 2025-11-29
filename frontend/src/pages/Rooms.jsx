@@ -25,7 +25,7 @@ const Rooms = () => {
   })
   return (
     <div>
-      <div className='flex justify-between items-center py-8 border-b border-black'>
+      <div className='flex justify-between items-center py-12 border-b border-black'>
         <NavLink
         to='/'
         className="py-2 px-4 absolute top-4 left-4 rounded-2xl text-blue-500 border border-blue-500 hover:text-blue-900 hover:border-blue-900 duration-200">
@@ -51,12 +51,12 @@ const Rooms = () => {
     ?<div className='font-semibold mt-[6rem] md:mt-[12rem] text-black text-lg sm:text-2xl md:text-4xl text-center'>
       No rooms are available yet
     </div>
-    :<div className='grid grid-cols-1 mt-[3rem] md:mt-[5rem] sm:grid-cols-2 md:grid-cols-4 gap-4'>
-        {/* {rooms.map(room,index)=>(
-          <div>
-
+    :<div className='mx-8 grid grid-cols-1 mt-[3rem] md:mt-[5rem] sm:grid-cols-2 md:grid-cols-4 gap-4'>
+       {rooms.map((room)=>(
+         <div key={room._id}>
+            <RoomCard image={room.Thumbnail} name={room.RoomName} type={room.Type} members={room.Participants}/>
           </div>
-        )} */}
+       ))}
       </div>}
     </div>
   )

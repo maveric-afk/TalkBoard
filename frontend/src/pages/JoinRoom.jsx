@@ -56,7 +56,7 @@ export default function JoinRoom() {
                   Back
               </NavLink>
 
-      <motion.div variants={containerVariants} initial="hidden" animate="visible" className="w-full max-w-md">
+      <motion.div variants={containerVariants} initial="hidden" animate="visible" className="w-full max-w-md mt-[4rem] md:mt-[0rem]">
         
         {/* Heading */}
         <motion.h1 variants={itemVariants} className="text-4xl md:text-5xl font-bold text-blue-900 text-center mb-12">
